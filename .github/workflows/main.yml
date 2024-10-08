@@ -16,7 +16,7 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_ROOT_PASSWORD: 
           MYSQL_DATABASE: event_management_system_db
         options: >-
           --health-cmd="mysqladmin ping --silent"
@@ -39,7 +39,7 @@ jobs:
       # Wait for MySQL to be ready
       - name: Wait for MySQL
         run: |
-          until mysqladmin ping --host=localhost --port=3306 --user=root --password=root_password --silent; do
+          until mysqladmin ping --host=localhost --port=3306 --user=root --password= --silent; do
             echo "Waiting for MySQL to be ready..."
             sleep 5
           done
