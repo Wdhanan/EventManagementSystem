@@ -13,42 +13,34 @@ jobs:
     services:
       mysql:
         image: mysql:8
+        options: --health-cmd='mysqladmin ping --silent' --health-interval=10s --health-timeout=5s --health-retries=3
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: 
           MYSQL_DATABASE: event_management_system_db
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-          
+          # Remove MYSQL_ROOT_PASSWORD since no password is needed
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' # Allow MySQL to run without a password
+
     steps:
-      # Checkout code
-      - name: Check out the code
+      - name: Check out code
         uses: actions/checkout@v4
 
-      # Set up JDK 17
-      - name: Setting up JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
           java-version: 17
 
-      # Wait for MySQL to be ready
-      - name: Wait for MySQL
+      - name: Wait for MySQL to start
         run: |
-          until mysqladmin ping --host=localhost --port=3306 --user=root --password= --silent; do
+          until mysqladmin ping --host=localhost --port=3306 --user=root --silent; do
             echo "Waiting for MySQL to be ready..."
-            sleep 5
+            sleep 10
           done
 
-      # Run Unit Tests
       - name: Run Unit Tests
         run: mvn -B test --file pom.xml
 
-      # Build the application
       - name: Build the Event App
         run: |
           mvn clean
