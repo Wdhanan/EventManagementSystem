@@ -19,9 +19,14 @@ jobs:
           distribution: 'corretto'
           java-version: 17
 
+      - name: Download JUnit Platform Console Standalone
+        run: |
+          wget https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.8.0/junit-platform-console-standalone-1.8.0.jar
+          # If you're using a different version, make sure to update the URL accordingly
+
       - name: Run Unit Tests
         run: |
-          java -jar junit-platform-console-standalone-1.8.0.jar --class-path target/test-classes --scan-class-path # Modify the jar version as per your needs
-          
+          java -jar junit-platform-console-standalone-1.8.0.jar --class-path target/test-classes --scan-class-path
+
       - name: Build the Event App
         run: mvn clean package --file pom.xml
