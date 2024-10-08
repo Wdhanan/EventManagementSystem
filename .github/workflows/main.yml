@@ -25,7 +25,7 @@ jobs:
           java-version: 17
         # run the tests
       - name: Unit Testing
-        run: mvn -B test --file pom.xml
+        run: mvn -B --no-transfer-progress test --file pom.xml
 
       #package and build
       - name: Build the Event App
