@@ -96,7 +96,7 @@
             </plugin>
         </plugins>
 	
-	<finalName>eventmanagementsystem</finalName>
+	
     </build>
 
 </project>
