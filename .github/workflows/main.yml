@@ -21,5 +21,20 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn --batch-mode package
+      # Build & push Docker image
+    - name: Build & push Docker 
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: hanan300/eventmanagementsystem
+        tags: latest
+        registry: docker.io
+        dockerfile: Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
       
+      
+
+
+
+
 

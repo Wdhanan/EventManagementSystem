@@ -1,9 +1,4 @@
 FROM openjdk:17-jdk
-
-WORKDIR /app
-
-COPY target/EventManagementSystem-1.0.0.jar /app/EventManagementSystem.jar
-
 EXPOSE 8080
-
-CMD ["java", "-jar", "EventManagementSystem.jar"]
+ADD target/eventmanagementsystem.jar 1.0.0.jar eventmanagementsystem.jar
+ENTRYPOINT ["java", "-jar", "/eventmanagementsystem.jar"]
