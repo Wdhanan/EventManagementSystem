@@ -1,4 +1,4 @@
-name: Build & Deploy Event app
+name: Build & Deploy Event App
 
 on:
   push:
@@ -12,17 +12,16 @@ jobs:
 
     services:
       mysql:
-        image: mysql:latest
+        image: mysql:8
         options: >
-      	  --health-cmd="mysqladmin ping --silent" 
-      	  --health-interval=10s 
-      	  --health-timeout=5s 
-      	  --health-retries=3
+          --health-cmd="mysqladmin ping --silent" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=3
         ports:
           - 3306:3306
         env:
           MYSQL_DATABASE: event_management_system_db
-          # Remove MYSQL_ROOT_PASSWORD since no password is needed
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' # Allow MySQL to run without a password
 
     steps:
