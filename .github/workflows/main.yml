@@ -21,14 +21,13 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn --batch-mode package
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-    - name: Build & push Docker image
+      # Build & push Docker image
+    - name: Build & push Docker 
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: hanan300/eventmanagementsystem
         tags: latest
-        dockerfile: Dockerfile
         registry: docker.io
-
-#pushing to docker hub
+        dockerfile: Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
