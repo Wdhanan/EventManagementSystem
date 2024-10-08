@@ -1,7 +1,5 @@
 name: Build & Deploy Event app
 
-# when to trigger this action
-
 on:
   push:
     branches:
@@ -11,24 +9,47 @@ jobs:
   build-deploy:
     name: Build and Deploy EventManagementSystem
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_DATABASE: event_management_system_db
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+          
     steps:
-        #checkout the code
-      - name: Check the code
-        # uses means we want to checkout some actions available on: https://github.com/marketplace/actions/checkout
+      # Checkout code
+      - name: Check out the code
         uses: actions/checkout@v4
 
-        #set up our JDK 17 on our runner
+      # Set up JDK 17
       - name: Setting up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
           java-version: 17
-        # run the tests
-      - name: Unit Testing
+
+      # Wait for MySQL to be ready
+      - name: Wait for MySQL
+        run: |
+          until mysqladmin ping --host=localhost --port=3306 --user=root --password=root_password --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 5
+          done
+
+      # Run Unit Tests
+      - name: Run Unit Tests
         run: mvn -B test --file pom.xml
 
-      #package and build
+      # Build the application
       - name: Build the Event App
-        run: |  # when you have multiple commands
+        run: |
           mvn clean
           mvn -B package --file pom.xml
