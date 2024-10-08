@@ -29,4 +29,4 @@ jobs:
           java -jar junit-platform-console-standalone-1.8.0.jar --class-path target/test-classes --scan-class-path
 
       - name: Build the Event App
-        run: mvn -B test --file pom.xml
+        run: ./mvnw clean package
